@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>YouTube Comment Analyzer | KnowaData</title>
+
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <header>
+        <nav>
+            <div class="logo">
+                <a href="index.html">KNOWADATA</a>
+            </div>
+
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="products.html">Products</a>
+                <a href="index.html#about">About</a>
+            </div>
+        </nav>
+    </header>
+
+
+    <main>
+
+        <section class="tool-header">
+
+            <p class="eyebrow">BUILD 001</p>
+
+            <h1>YouTube Comment Analyzer</h1>
+
+            <p class="tool-intro">
+                What is your audience actually telling you?
+                Paste a public YouTube video below and we'll turn
+                the comments into something useful.
+            </p>
+
+        </section>
+
+
+        <section class="analyzer">
+
+            <label for="youtube-url">
+                YouTube video URL
+            </label>
+
+            <div class="analyzer-input">
+
+                <input
+                    type="url"
+                    id="youtube-url"
+                    placeholder="https://www.youtube.com/watch?v=..."
+                >
+
+                <button id="analyze-button">
+                    Analyze Comments
+                </button>
+
+            </div>
+
+            <p class="beta-note">
+                Free during beta. Public videos only.
+            </p>
+
+
+            <!-- Results will eventually appear here -->
+
+            <div id="results" class="results hidden">
+
+                <p class="eyebrow">ANALYSIS</p>
+
+                <h2>What your audience is saying</h2>
+
+                <div class="result-grid">
+
+                    <div class="result-card">
+                        <span>COMMENTS ANALYZED</span>
+                        <strong id="comment-count">—</strong>
+                    </div>
+
+                    <div class="result-card">
+                        <span>OVERALL SENTIMENT</span>
+                        <strong id="sentiment">—</strong>
+                    </div>
+
+                </div>
+
+                <div class="analysis-section">
+
+                    <h3>Top themes</h3>
+
+                    <div id="themes">
+                        <p>Analysis will appear here.</p>
+                    </div>
+
+                </div>
+
+                <div class="analysis-section">
+
+                    <h3>Common questions</h3>
+
+                    <div id="questions">
+                        <p>Analysis will appear here.</p>
+                    </div>
+
+                </div>
+
+                <div class="analysis-section">
+
+                    <h3>Content opportunities</h3>
+
+                    <div id="opportunities">
+                        <p>Analysis will appear here.</p>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <footer>
+        <p>© 2026 KnowaData</p>
+    </footer>
+
+
+    <script src="youtube-comments.js"></script>
+
+</body>
+
+</html>
