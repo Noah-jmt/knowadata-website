@@ -6,6 +6,7 @@ const sequence = [
     "Hi, I'm Noah",
     "Know",
     "     Data",
+    " now",
     "KnowaData"
 ];
 
@@ -34,6 +35,7 @@ brand.classList.add("show");
 
 
 // Run the sequence
-setTimeout(nextBrandStep, 2000);  // Hi, I'm Noah → For Data Now
-setTimeout(nextBrandStep, 3500);  // → Know Data
-setTimeout(nextBrandStep, 5000);  // → KnowaData
+setTimeout(nextBrandStep, 2000);  // Hi, I'm Noah → Know
+setTimeout(nextBrandStep, 3500);  // →  Data
+setTimeout(nextBrandStep, 5000);  // → now
+setTimeout(nextBrandStep, 6500);  // → Knowadata
