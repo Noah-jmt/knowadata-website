@@ -1,41 +1,44 @@
-// KNOWADATA brand intro
+// --------------------------------------------------
+// KNOWADATA BRAND INTRO
+// --------------------------------------------------
 
 const brand = document.querySelector(".brand-animation");
 
 const sequence = [
     "Hi, I'm Noah",
-    "Know",
-    "     Data",
-    " now",
+    "Know Data",
+    "Data Now",
     "KnowaData"
 ];
 
 let step = 0;
 
-function nextBrandStep() {
+
+// --------------------------------------------------
+// SHOW BRAND STEP
+// --------------------------------------------------
+
+function showBrandStep() {
 
     brand.classList.remove("show");
 
     setTimeout(() => {
 
+        brand.textContent = sequence[step];
+        brand.classList.add("show");
+
         step++;
 
-        if (step < sequence.length) {
-            brand.textContent = sequence[step];
-            brand.classList.add("show");
-        }
-
-    }, 180);
+    }, 300);
 }
 
 
-// Start with DATA
-brand.textContent = sequence[0];
-brand.classList.add("show");
+// --------------------------------------------------
+// START ANIMATION
+// --------------------------------------------------
 
+showBrandStep();
 
-// Run the sequence
-setTimeout(nextBrandStep, 2000);  // Hi, I'm Noah → Know
-setTimeout(nextBrandStep, 3500);  // →  Data
-setTimeout(nextBrandStep, 5000);  // → now
-setTimeout(nextBrandStep, 6500);  // → Knowadata
+setTimeout(showBrandStep, 2500);  // Know Data
+setTimeout(showBrandStep, 5000);  // Data Now
+setTimeout(showBrandStep, 7500);  // KnowaData
