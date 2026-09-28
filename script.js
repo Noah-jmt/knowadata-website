@@ -4,8 +4,8 @@ const brand = document.querySelector(".brand-animation");
 
 const sequence = [
     "Hi, I'm Noah",
-    "Know Data",
-    "Data Now",
+    "Know",
+    "     Data",
     "KnowaData"
 ];
 
