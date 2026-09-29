@@ -12,6 +12,9 @@ const commentCount = document.getElementById("comment-count");
 const topWords = document.getElementById("top-words");
 const topBigrams = document.getElementById("top-bigrams");
 
+const sentiment = document.getElementById("sentiment");
+
+
 
 // --------------------------------------------------
 // ANALYZE BUTTON
@@ -83,6 +86,7 @@ analyzeButton.addEventListener("click", async () => {
         const wordResults = getTopWords(commentTexts, 15);
 
         const bigramResults = getTopBigrams(commentTexts, 15);
+	const sentimentResults = getSentimentBreakdown(commentTexts);
 
 
         // ------------------------------------------
@@ -98,6 +102,8 @@ analyzeButton.addEventListener("click", async () => {
             topBigrams,
             bigramResults
         );
+
+	displaySentiment(sentiment, sentimentResults);
 
 
         // ------------------------------------------
@@ -369,4 +375,123 @@ function displayFrequencyResults(container, items) {
 
     container.innerHTML = "";
     container.appendChild(list);
+}
+
+
+// --------------------------------------------------
+// SENTIMENT ANALYSIS
+// --------------------------------------------------
+
+const positiveWords = new Set([
+    "amazing",
+    "awesome",
+    "best",
+    "beautiful",
+    "cool",
+    "enjoy",
+    "enjoyed",
+    "excellent",
+    "fantastic",
+    "favorite",
+    "good",
+    "great",
+    "helpful",
+    "impressive",
+    "interesting",
+    "love",
+    "loved",
+    "nice",
+    "perfect",
+    "recommend",
+    "thanks",
+    "thank",
+    "useful"
+]);
+
+const negativeWords = new Set([
+    "annoying",
+    "awful",
+    "bad",
+    "boring",
+    "broken",
+    "disappointed",
+    "disappointing",
+    "hate",
+    "hated",
+    "horrible",
+    "issue",
+    "issues",
+    "problem",
+    "problems",
+    "terrible",
+    "ugly",
+    "useless",
+    "worse",
+    "worst"
+]);
+
+
+function getSentimentBreakdown(comments) {
+
+    let positive = 0;
+    let neutral = 0;
+    let negative = 0;
+
+    comments.forEach(comment => {
+
+        const words = cleanText(comment).split(" ");
+
+        let score = 0;
+
+        words.forEach(word => {
+
+            if (positiveWords.has(word)) {
+                score++;
+            }
+
+            if (negativeWords.has(word)) {
+                score--;
+            }
+
+        });
+
+        if (score > 0) {
+            positive++;
+        } else if (score < 0) {
+            negative++;
+        } else {
+            neutral++;
+        }
+
+    });
+
+    const total = comments.length;
+
+    if (total === 0) {
+        return {
+            positive: 0,
+            neutral: 0,
+            negative: 0
+        };
+    }
+
+    return {
+        positive: Math.round((positive / total) * 100),
+        neutral: Math.round((neutral / total) * 100),
+        negative: Math.round((negative / total) * 100)
+    };
+}
+
+
+// --------------------------------------------------
+// DISPLAY SENTIMENT
+// --------------------------------------------------
+
+function displaySentiment(container, results) {
+
+    container.innerHTML = `
+        <p>Positive: ${results.positive}%</p>
+        <p>Neutral: ${results.neutral}%</p>
+        <p>Negative: ${results.negative}%</p>
+    `;
 }
