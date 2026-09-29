@@ -6,8 +6,9 @@ const brand = document.querySelector(".brand-animation");
 
 const sequence = [
     "Hi, I'm Noah",
-    "Know Data",
-    "Data Now",
+    "Know",
+    "     "Data",
+    " now",
     "KnowaData"
 ];
 
@@ -39,6 +40,7 @@ function showBrandStep() {
 
 showBrandStep();
 
-setTimeout(showBrandStep, 2500);  // Know Data
-setTimeout(showBrandStep, 5000);  // Data Now
-setTimeout(showBrandStep, 7500);  // KnowaData
+setTimeout(showBrandStep, 2500);  // Know
+setTimeout(showBrandStep, 5000);  // Data
+setTimeout(showBrandStep, 7500);  // Now
+setTimeout(showBrandStep, 9000);  // KnowaData
