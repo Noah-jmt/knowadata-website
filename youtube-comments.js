@@ -1,11 +1,21 @@
-// YouTube Comment Analyzer
+// --------------------------------------------------
+// YOUTUBE COMMENT ANALYZER
 // Build 001
+// --------------------------------------------------
 
 const analyzeButton = document.getElementById("analyze-button");
 const youtubeUrlInput = document.getElementById("youtube-url");
+
 const results = document.getElementById("results");
 const commentCount = document.getElementById("comment-count");
 
+const topWords = document.getElementById("top-words");
+const topBigrams = document.getElementById("top-bigrams");
+
+
+// --------------------------------------------------
+// ANALYZE BUTTON
+// --------------------------------------------------
 
 analyzeButton.addEventListener("click", async () => {
 
@@ -28,6 +38,10 @@ analyzeButton.addEventListener("click", async () => {
 
     try {
 
+        // ------------------------------------------
+        // GET COMMENTS FROM OUR CLOUDFLARE API
+        // ------------------------------------------
+
         const response = await fetch(
             `/api/youtube-comments?videoId=${encodeURIComponent(videoId)}`
         );
@@ -36,13 +50,62 @@ analyzeButton.addEventListener("click", async () => {
 
         if (!response.ok) {
             console.error(data);
-            throw new Error(data.error || "Unable to retrieve comments.");
+            throw new Error(
+                data.error || "Unable to retrieve comments."
+            );
         }
 
         console.log(data);
 
+
+        // ------------------------------------------
+        // SHOW COMMENT COUNT
+        // ------------------------------------------
+
         commentCount.textContent = data.commentCount;
+
+
+        // ------------------------------------------
+        // GET COMMENT TEXT
+        // ------------------------------------------
+
+        const comments = data.comments || [];
+
+        const commentTexts = comments
+            .map(comment => comment.text || "")
+            .filter(text => text.length > 0);
+
+
+        // ------------------------------------------
+        // RUN BASIC TEXT ANALYSIS
+        // ------------------------------------------
+
+        const wordResults = getTopWords(commentTexts, 15);
+
+        const bigramResults = getTopBigrams(commentTexts, 15);
+
+
+        // ------------------------------------------
+        // DISPLAY RESULTS
+        // ------------------------------------------
+
+        displayFrequencyResults(
+            topWords,
+            wordResults
+        );
+
+        displayFrequencyResults(
+            topBigrams,
+            bigramResults
+        );
+
+
+        // ------------------------------------------
+        // SHOW RESULTS PANEL
+        // ------------------------------------------
+
         results.classList.remove("hidden");
+
 
     } catch (error) {
 
@@ -56,6 +119,10 @@ analyzeButton.addEventListener("click", async () => {
     }
 });
 
+
+// --------------------------------------------------
+// GET YOUTUBE VIDEO ID
+// --------------------------------------------------
 
 function getYouTubeVideoId(url) {
 
@@ -78,4 +145,228 @@ function getYouTubeVideoId(url) {
     } catch {
         return null;
     }
+}
+
+
+// --------------------------------------------------
+// STOP WORDS
+//
+// Words that are common in English but usually
+// don't tell us much about the subject.
+// --------------------------------------------------
+
+const stopWords = new Set([
+
+    "a",
+    "about",
+    "after",
+    "again",
+    "all",
+    "also",
+    "am",
+    "an",
+    "and",
+    "any",
+    "are",
+    "as",
+    "at",
+    "be",
+    "because",
+    "been",
+    "but",
+    "by",
+    "can",
+    "could",
+    "did",
+    "do",
+    "does",
+    "for",
+    "from",
+    "get",
+    "got",
+    "had",
+    "has",
+    "have",
+    "he",
+    "her",
+    "here",
+    "him",
+    "his",
+    "how",
+    "i",
+    "if",
+    "in",
+    "is",
+    "it",
+    "its",
+    "just",
+    "like",
+    "me",
+    "more",
+    "my",
+    "no",
+    "not",
+    "of",
+    "on",
+    "one",
+    "or",
+    "our",
+    "out",
+    "really",
+    "so",
+    "some",
+    "that",
+    "the",
+    "their",
+    "them",
+    "then",
+    "there",
+    "they",
+    "this",
+    "to",
+    "too",
+    "up",
+    "very",
+    "was",
+    "we",
+    "were",
+    "what",
+    "when",
+    "with",
+    "would",
+    "you",
+    "your"
+]);
+
+
+// --------------------------------------------------
+// CLEAN TEXT
+// --------------------------------------------------
+
+function cleanText(text) {
+
+    return text
+        .toLowerCase()
+        .replace(/https?:\/\/\S+/g, " ")
+        .replace(/[^a-z0-9'\s]/g, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+}
+
+
+// --------------------------------------------------
+// TOKENIZE COMMENT
+// --------------------------------------------------
+
+function getWords(text) {
+
+    const cleaned = cleanText(text);
+
+    if (!cleaned) {
+        return [];
+    }
+
+    return cleaned
+        .split(" ")
+        .filter(word =>
+            word.length > 1 &&
+            !stopWords.has(word)
+        );
+}
+
+
+// --------------------------------------------------
+// TOP WORDS
+// --------------------------------------------------
+
+function getTopWords(comments, limit = 15) {
+
+    const counts = {};
+
+    comments.forEach(comment => {
+
+        const words = getWords(comment);
+
+        words.forEach(word => {
+
+            counts[word] = (counts[word] || 0) + 1;
+
+        });
+
+    });
+
+    return sortCounts(counts, limit);
+}
+
+
+// --------------------------------------------------
+// TOP TWO-WORD PHRASES
+// --------------------------------------------------
+
+function getTopBigrams(comments, limit = 15) {
+
+    const counts = {};
+
+    comments.forEach(comment => {
+
+        const words = getWords(comment);
+
+        for (let i = 0; i < words.length - 1; i++) {
+
+            const phrase = `${words[i]} ${words[i + 1]}`;
+
+            counts[phrase] = (counts[phrase] || 0) + 1;
+
+        }
+
+    });
+
+    return sortCounts(counts, limit);
+}
+
+
+// --------------------------------------------------
+// SORT COUNTS
+// --------------------------------------------------
+
+function sortCounts(counts, limit) {
+
+    return Object.entries(counts)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, limit);
+}
+
+
+// --------------------------------------------------
+// DISPLAY FREQUENCY RESULTS
+// --------------------------------------------------
+
+function displayFrequencyResults(container, items) {
+
+    if (!container) {
+        return;
+    }
+
+    if (!items.length) {
+
+        container.innerHTML =
+            "<p>No results found.</p>";
+
+        return;
+    }
+
+    const list = document.createElement("ol");
+
+    items.forEach(([text, count]) => {
+
+        const item = document.createElement("li");
+
+        item.textContent = `${text} — ${count}`;
+
+        list.appendChild(item);
+
+    });
+
+    container.innerHTML = "";
+    container.appendChild(list);
 }
