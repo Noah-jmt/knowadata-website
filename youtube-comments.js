@@ -11,6 +11,7 @@ const commentCount = document.getElementById("comment-count");
 
 const topWords = document.getElementById("top-words");
 const topBigrams = document.getElementById("top-bigrams");
+const topTrigrams = document.getElementById("top-trigrams");
 
 const sentiment = document.getElementById("sentiment");
 
@@ -86,6 +87,7 @@ analyzeButton.addEventListener("click", async () => {
         const wordResults = getTopWords(commentTexts, 15);
 
         const bigramResults = getTopBigrams(commentTexts, 15);
+	const trigramResults = getTopTrigrams(commentTexts, 15);
 	const sentimentResults = getSentimentBreakdown(commentTexts);
 
 
@@ -102,6 +104,12 @@ analyzeButton.addEventListener("click", async () => {
             topBigrams,
             bigramResults
         );
+
+	displayFrequencyResults(
+	    topTrigrams,
+	    trigramsResults,
+	    comments
+	);
 
 	displaySentiment(sentiment, sentimentResults);
 
@@ -330,6 +338,32 @@ function getTopBigrams(comments, limit = 15) {
     return sortCounts(counts, limit);
 }
 
+// --------------------------------------------------
+// TOP THREE-WORD PHRASES
+// --------------------------------------------------
+
+function getTopTrigrams(comments, limit = 15) {
+
+    const counts = {};
+
+    comments.forEach(comment => {
+
+        const words = getWords(comment);
+
+        for (let i = 0; i < words.length - 2; i++) {
+
+            const phrase =
+                `${words[i]} ${words[i + 1]} ${words[i + 2]}`;
+
+            counts[phrase] = (counts[phrase] || 0) + 1;
+
+        }
+
+    });
+
+    return sortCounts(counts, limit);
+}
+
 
 // --------------------------------------------------
 // SORT COUNTS
@@ -347,7 +381,7 @@ function sortCounts(counts, limit) {
 // DISPLAY FREQUENCY RESULTS
 // --------------------------------------------------
 
-function displayFrequencyResults(container, items) {
+function displayFrequencyResults(container, items, comments) {
 
     if (!container) {
         return;
@@ -361,6 +395,8 @@ function displayFrequencyResults(container, items) {
         return;
     }
 
+    container.innerHTML = "";
+
     const list = document.createElement("ol");
 
     items.forEach(([text, count]) => {
@@ -373,8 +409,77 @@ function displayFrequencyResults(container, items) {
 
     });
 
-    container.innerHTML = "";
     container.appendChild(list);
+
+
+    // ----------------------------------------------
+    // SHOW COMMENTS ASSOCIATED WITH #1 RESULT
+    // ----------------------------------------------
+
+    const topResult = items[0][0];
+
+    const matchingComments = comments
+        .filter(comment =>
+            cleanText(comment.text || "")
+                .includes(topResult.toLowerCase())
+        )
+        .sort((a, b) =>
+            (b.likes || 0) - (a.likes || 0)
+        )
+        .slice(0, 3);
+
+
+    if (matchingComments.length > 0) {
+
+        const commentSection =
+            document.createElement("div");
+
+        commentSection.className =
+            "associated-comments";
+
+
+        const heading =
+            document.createElement("h3");
+
+        heading.textContent =
+            `Top comments mentioning "${topResult}"`;
+
+        commentSection.appendChild(heading);
+
+
+        matchingComments.forEach(comment => {
+
+            const commentBox =
+                document.createElement("div");
+
+            commentBox.className =
+                "associated-comment";
+
+
+            const commentText =
+                document.createElement("p");
+
+            commentText.textContent =
+                `"${comment.text}"`;
+
+
+            const meta =
+                document.createElement("span");
+
+            meta.textContent =
+                `${comment.author} · ${comment.likes || 0} likes`;
+
+
+            commentBox.appendChild(commentText);
+            commentBox.appendChild(meta);
+
+            commentSection.appendChild(commentBox);
+
+        });
+
+
+        container.appendChild(commentSection);
+    }
 }
 
 
