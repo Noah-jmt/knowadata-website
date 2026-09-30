@@ -104,7 +104,7 @@ analyzeButton.addEventListener("click", async () => {
 
 	displayFrequencyResults(
 	    topBigrams,
-	    bigramResults
+	    bigramResults,
 	    comments
 	);
 
