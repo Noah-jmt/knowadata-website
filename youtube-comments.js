@@ -95,21 +95,30 @@ analyzeButton.addEventListener("click", async () => {
         // DISPLAY RESULTS
         // ------------------------------------------
 
-        displayFrequencyResults(
-            topWords,
-            wordResults
-        );
 
-        displayFrequencyResults(
-            topBigrams,
-            bigramResults
-        );
+	displayFrequencyResults(
+	    topWords,
+	    wordResults,
+	    comments
+	);
+
+	displayFrequencyResults(
+	    topBigrams,
+	    bigramResults
+	    comments
+	);
 
 	displayFrequencyResults(
 	    topTrigrams,
-	    trigramsResults,
+	    trigramResults,
 	    comments
 	);
+
+	displaySentiment(
+	    sentiment,
+	    sentimentResults
+	);
+
 
 	displaySentiment(sentiment, sentimentResults);
 
