@@ -468,3 +468,10 @@ footer {
 .about-content { max-width: 780px; }
 .about-content p { line-height: 1.75; margin-bottom: 1.2rem; }
 .nav-links a[aria-current="page"] { color: #fff; }
+
+/* Matching Creator Tools and Arcade category headings */
+.products-category { max-width: 900px; margin: 0 auto; padding: 48px 32px 30px; }
+.category-heading { font-size: clamp(2rem, 5vw, 3.5rem); margin-bottom: 20px; }
+.category-description { max-width: 650px; color: #aaa; font-size: 1.1rem; }
+.products-category .product-card { margin-top: 48px; }
+.arcade-section { padding-top: 24px; }
