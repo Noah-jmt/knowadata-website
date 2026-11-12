@@ -459,3 +459,7 @@ footer {
     }
 }
 
+
+/* Spacing for multiple workbench cards */
+.products-grid { display: grid; gap: 24px; }
+.project-card .eyebrow { margin-bottom: 12px; }
