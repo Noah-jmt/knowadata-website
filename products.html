@@ -7,7 +7,23 @@
 
     <title>Products | KnowaData</title>
 
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css?v=20261112-layout">
+
+    <style>
+      /* Products layout: scoped to this page, independent of cached shared CSS. */
+      .page-header, .products-category { width: 100%; max-width: 900px; margin-left: auto; margin-right: auto; }
+      .products-category { padding: 28px 32px 48px; }
+      .products-category:last-of-type { padding-bottom: 120px; }
+      .products-category .category-heading { font-size: clamp(2rem, 5vw, 3.5rem); line-height: 1.15; margin: 0 0 12px; font-weight: 700; }
+      .products-category .category-description { color: #aaa; font-size: 1.1rem; line-height: 1.6; margin: 0 0 32px; max-width: 660px; }
+      .products-category .product-card { width: 100%; margin: 0; padding: 36px 40px; background: #111113; border: 1px solid #292929; border-radius: 12px; }
+      .products-category .product-card h3 { font-size: clamp(1.5rem, 3vw, 2rem); line-height: 1.25; margin: 0 0 16px; }
+      .products-category .product-card p { color: #aaa; max-width: 640px; margin: 0 0 20px; }
+      .products-category .product-card ul { color: #aaa; margin: 20px 0 28px 20px; padding: 0; }
+      .products-category .product-card li { margin-bottom: 7px; }
+      .products-category .product-card .button { display: inline-block; }
+      @media (max-width: 600px) { .products-category { padding: 24px 20px 38px; } .products-category .product-card { padding: 24px; } }
+    </style>
 </head>
 
 <body>
@@ -47,7 +63,7 @@
             <p class="category-description">Simple digital tools designed to remove friction from creative workflows.</p>
             <article class="product-card">
 
-                <h2>YouTube Comment Analyzer</h2>
+                <h3>YouTube Comment Analyzer</h3>
 
                 <p>
                     Turn hundreds of YouTube comments into something
@@ -74,7 +90,7 @@
             <h2 class="category-heading">Arcade</h2>
             <p class="category-description">Small games. Big ideas. Learn something while having fun.</p>
             <article class="product-card">
-                <h2>Code Road</h2>
+                <h3>Code Road</h3>
                 <p>Practice Python, R, SQL, HTML, Power Query M, DAX, and Tableau calculations through short typing races.</p>
                 <ul>
                     <li>Functions, loops, and dictionaries</li>
