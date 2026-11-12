@@ -463,3 +463,8 @@ footer {
 /* Spacing for multiple workbench cards */
 .products-grid { display: grid; gap: 24px; }
 .project-card .eyebrow { margin-bottom: 12px; }
+
+/* Standalone About page */
+.about-content { max-width: 780px; }
+.about-content p { line-height: 1.75; margin-bottom: 1.2rem; }
+.nav-links a[aria-current="page"] { color: #fff; }
